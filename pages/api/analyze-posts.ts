@@ -27,7 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function analyzePosts(posts: Post[]) {
-  const categories = ['解决方案请求', '痛苦与愤怒', '建议请求', '金钱讨论'];
   const analyzedPosts = await Promise.all(posts.map(async (post) => {
     const prompt = `
       分析以下 Reddit 帖子的标题和内容，并确定它是否属于以下类别（回答是或否）：

@@ -1,5 +1,5 @@
 import reddit from './reddit';
-import { Snoowrap } from 'snoowrap';
+import Snoowrap from 'snoowrap';  // 改为默认导入
 
 export interface Subreddit {
   id: string;

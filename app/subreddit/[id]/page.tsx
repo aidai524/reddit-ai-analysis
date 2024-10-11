@@ -96,7 +96,7 @@ export default function SubredditPage() {
                   <td className="px-4 py-2 text-center">{new Date(post.created_utc * 1000).toLocaleDateString()}</td>
                   <td className="px-4 py-2 text-center">
                     {Object.entries(post.analysis)
-                      .filter(([_, value]) => value)
+                      .filter(([_key, value]) => value)
                       .map(([key]) => categoryShortNames[key as keyof typeof categoryShortNames])
                       .join(', ')}
                   </td>

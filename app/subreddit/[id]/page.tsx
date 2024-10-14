@@ -69,7 +69,7 @@ export default function SubredditPage() {
           className={`w-1/2 py-2 text-center ${activeTab === 'themes' ? 'border-b-2 border-primary font-bold' : ''}`}
           onClick={() => setActiveTab('themes')}
         >
-          主题分���
+          主题分析
         </button>
       </div>
       {activeTab === 'top-posts' && (

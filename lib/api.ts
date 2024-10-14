@@ -1,4 +1,4 @@
-import reddit from './reddit';
+import { getPopularSubreddits as getPopularSubredditsFromReddit, getSubredditTopPosts } from './redditOperations';
 import Snoowrap from 'snoowrap';  // 改为默认导入
 
 export interface Subreddit {
@@ -19,8 +19,7 @@ export interface Post {
 }
 
 export async function getPopularSubreddits(limit: number = 10): Promise<Subreddit[]> {
-  if (!reddit) throw new Error('Reddit client is not initialized');
-  const subreddits = await reddit.getPopularSubreddits({ limit });
+  const subreddits = await getPopularSubredditsFromReddit(limit);
   return subreddits.map((subreddit: Snoowrap.Subreddit) => ({
     id: subreddit.id,
     name: subreddit.display_name,
@@ -30,12 +29,10 @@ export async function getPopularSubreddits(limit: number = 10): Promise<Subreddi
 }
 
 export async function getSubredditPosts(subredditName: string, limit: number = 50): Promise<Post[]> {
-  if (!reddit) throw new Error('Reddit client is not initialized');
-  const subreddit = await reddit.getSubreddit(subredditName);
   const now = Math.floor(Date.now() / 1000);
   const oneDayAgo = now - 24 * 60 * 60;
 
-  const topPosts = await subreddit.getTop({time: 'day', limit: limit});
+  const topPosts = await getSubredditTopPosts(subredditName, limit);
   
   return topPosts
     .filter((post: Snoowrap.Submission) => post.created_utc >= oneDayAgo)

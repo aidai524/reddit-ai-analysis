@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -68,7 +69,7 @@ export default function SubredditPage() {
           className={`w-1/2 py-2 text-center ${activeTab === 'themes' ? 'border-b-2 border-primary font-bold' : ''}`}
           onClick={() => setActiveTab('themes')}
         >
-          主题分析
+          主题分���
         </button>
       </div>
       {activeTab === 'top-posts' && (
@@ -96,7 +97,7 @@ export default function SubredditPage() {
                   <td className="px-4 py-2 text-center">{new Date(post.created_utc * 1000).toLocaleDateString()}</td>
                   <td className="px-4 py-2 text-center">
                     {Object.entries(post.analysis)
-                      .filter(([_key, value]) => value)
+                      .filter(([, value]) => value)  // 使用解构赋值，完全忽略第一个参数
                       .map(([key]) => categoryShortNames[key as keyof typeof categoryShortNames])
                       .join(', ')}
                   </td>

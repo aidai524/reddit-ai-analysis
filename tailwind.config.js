@@ -49,5 +49,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/line-clamp")],
+  plugins: [],  // 移除 @tailwindcss/line-clamp 插件
 };

@@ -1,5 +1,5 @@
 import { getPopularSubreddits as getPopularSubredditsFromReddit, getSubredditTopPosts } from './redditOperations';
-import Snoowrap from 'snoowrap';  // 改为默认导入
+import Snoowrap from 'snoowrap';
 
 export interface Subreddit {
   id: string;
@@ -15,7 +15,7 @@ export interface Post {
   num_comments: number;
   created_utc: number;
   url: string;
-  selftext: string;  // 添加帖子内容
+  selftext: string;
 }
 
 export async function getPopularSubreddits(limit: number = 10): Promise<Subreddit[]> {

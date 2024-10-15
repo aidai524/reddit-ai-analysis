@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(analyzedPosts);
     } catch (error) {
       console.error('Error analyzing posts:', error);
-      res.status(500).json({ error: 'Failed to analyze posts' });
+      res.status(500).json({ error: 'Failed to analyze posts', details: error.message });
     }
   } else {
     res.setHeader('Allow', ['GET']);
@@ -47,15 +47,34 @@ async function analyzePosts(posts: Post[]) {
       }
     `;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.7,
-      max_tokens: 150,
-    });
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+        max_tokens: 150,
+      });
 
-    const analysis = JSON.parse(response.choices[0].message.content || '{}');
-    return { ...post, analysis };
+      const content = response.choices[0].message.content;
+      if (!content) {
+        throw new Error('OpenAI response is empty');
+      }
+
+      let analysis;
+      try {
+        // 尝试移除任何非 JSON 字符
+        const jsonString = content.replace(/^```json\s*|\s*```$/g, '').trim();
+        analysis = JSON.parse(jsonString);
+      } catch (parseError) {
+        console.error('Failed to parse OpenAI response:', content);
+        throw new Error(`Failed to parse OpenAI response: ${parseError.message}`);
+      }
+
+      return { ...post, analysis };
+    } catch (error) {
+      console.error('Error analyzing post:', error);
+      return { ...post, analysis: null };
+    }
   }));
 
   return analyzedPosts;

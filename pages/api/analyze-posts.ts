@@ -32,22 +32,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 async function analyzePosts(posts: Post[]) {
   const analyzedPosts = await Promise.all(posts.map(async (post) => {
     const prompt = `
-      分析以下 Reddit 帖子的标题和内容，并确定它是否属于以下类别（回答是或否）：
-      1. 解决方案请求
-      2. 痛苦与愤怒
-      3. 建议请求
-      4. 金钱讨论
+        Analyze the title and content of the following Reddit post and determine if it falls into one of the following categories (answer yes or no):
 
-      标题: ${post.title}
-      内容: ${post.selftext || ''}
+        1. Solution Request
+        2. Pain and Anger
+        3. Requests for recommendations
+        4. Money discussions
 
-      请以 JSON 格式回答，例如：
-      {
-        "解决方案请求": true,
-        "痛苦与愤怒": false,
-        "建议请求": true,
-        "金钱讨论": false
-      }
+        Title: ${post.title}
+
+        Content: ${post.selftext || ''}
+
+        Please answer in JSON format, for example:
+
+        {
+            "Solution Request": true,
+            "Pain & Anger": false,
+            "Suggestion Requests": true,
+            "Money Discussion": false
+        }
     `;
 
     try {

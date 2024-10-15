@@ -7,17 +7,16 @@ import { useLocalSubreddits, AnalyzedPost } from '../../../hooks/useLocalSubredd
 import { Sparkles, ArrowUp, MessageSquare, Calendar } from 'lucide-react';
 
 const categoryShortNames = {
-  '解决方案请求': '方案',
-  '痛苦与愤怒': '情绪',
-  '建议请求': '建议',
-  '金钱讨论': '金钱'
+  'Solution Request': 'Solution',
+  'Pain and Anger': 'Mind',
+  'Requests for recommendations': 'Requests',
+  'Money discussions': 'Money'
 };
-
 const categoryColors = {
-  '解决方案请求': 'bg-green-500',
-  '痛苦与愤怒': 'bg-red-500',
-  '建议请求': 'bg-blue-500',
-  '金钱讨论': 'bg-yellow-500'
+  'Solution Request': 'bg-green-500',
+  'Pain and Anger': 'bg-red-500',
+  'Requests for recommendations': 'bg-blue-500',
+  'Money discussions': 'bg-yellow-500'
 };
 
 export default function SubredditPage() {
@@ -60,7 +59,7 @@ export default function SubredditPage() {
   if (loading) return <div className="text-center py-10 text-pink-200">Loading...</div>;
   if (error) return <div className="text-center py-10 text-pink-500">Error: {error}</div>;
 
-  const categories = ['解决方案请求', '痛苦与愤怒', '建议请求', '金钱讨论'];
+  const categories = ['Solution Request','Pain and Anger','Requests for recommendations','Money discussions'];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 to-pink-500 text-white font-sans">

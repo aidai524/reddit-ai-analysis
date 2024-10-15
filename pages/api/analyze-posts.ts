@@ -18,7 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(analyzedPosts);
     } catch (error) {
       console.error('Error analyzing posts:', error);
-      res.status(500).json({ error: 'Failed to analyze posts', details: error.message });
+      res.status(500).json({ 
+        error: 'Failed to analyze posts', 
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   } else {
     res.setHeader('Allow', ['GET']);
@@ -55,19 +58,24 @@ async function analyzePosts(posts: Post[]) {
         max_tokens: 150,
       });
 
+      console.log('OpenAI API response:', response);
+
       const content = response.choices[0].message.content;
       if (!content) {
         throw new Error('OpenAI response is empty');
       }
 
+      console.log('OpenAI response content:', content);
+
       let analysis;
       try {
         // 尝试移除任何非 JSON 字符
         const jsonString = content.replace(/^```json\s*|\s*```$/g, '').trim();
+        console.log('Cleaned JSON string:', jsonString);
         analysis = JSON.parse(jsonString);
       } catch (parseError) {
         console.error('Failed to parse OpenAI response:', content);
-        throw new Error(`Failed to parse OpenAI response: ${parseError.message}`);
+        throw new Error(`Failed to parse OpenAI response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
       }
 
       return { ...post, analysis };
